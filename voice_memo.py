@@ -277,6 +277,7 @@ def main():
     group.add_argument("--list", action="store_true", help="List all current audio recordings and transcribed text files")
     group.add_argument("--del", dest="delete", action="store_true", help="Delete intermediate files")
     group.add_argument("--delall", action="store_true", help="Reset all recordings and database")
+    group.add_argument("--open", choices=["voice", "v", "text", "t"], help="Open directory in Finder (voice/v or text/t)")
     
     args = parser.parse_args()
     
@@ -294,6 +295,14 @@ def main():
         delete_intermediates()
     elif args.delall:
         reset_all()
+    elif args.open:
+        if args.open in ["voice", "v"]:
+            print(f"Opening audio directory: {AUDIO_DIR}")
+            subprocess.run(["open", str(AUDIO_DIR)])
+        elif args.open in ["text", "t"]:
+            ensure_dirs()
+            print(f"Opening transcript directory: {TRANSCRIPT_DIR}")
+            subprocess.run(["open", str(TRANSCRIPT_DIR)])
 
 if __name__ == "__main__":
     main()
